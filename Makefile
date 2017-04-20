@@ -3,6 +3,9 @@ GO ?= go
 # command to build and run on the local OS.
 GO_BUILD = go build
 
+# publish this many batches of 10 messages by default
+BATCH_COUNT ?= 1000
+
 # command to compiling the distributable. Specify GOOS and GOARCH for
 # the target OS.
 GO_DIST = GOOS=linux GOARCH=amd64 go build
@@ -22,7 +25,7 @@ build:
 	$(GO_BUILD) -o build/queue-foo-receive cmd/queue-foo-receive/main.go
 
 run-publish:
-	go run cmd/queue-foo-publish/main.go
+	BATCH_COUNT=$(BATCH_COUNT) go run cmd/queue-foo-publish/main.go
 
 run-receive:
 	go run cmd/queue-foo-receive/main.go
