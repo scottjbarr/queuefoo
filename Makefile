@@ -14,6 +14,9 @@ GO_DIST = GOOS=linux GOARCH=amd64 go build
 
 all: clean build
 
+deps:
+	go get -t ./...
+
 dist: test
 	mkdir -p dist
 	$(GO_DIST) -o dist/queue-foo-publish cmd/queue-foo-publish/main.go
