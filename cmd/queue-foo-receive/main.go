@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math/rand"
 
 	"github.com/scottjbarr/queuefoo"
 )
@@ -20,12 +21,19 @@ func main() {
 	go func() {
 		for {
 			m := <-messages
-			// log.Printf("%v", m.ID)
-			if err := q.Ack(m); err != nil {
-				log.Printf("[ERROR] failed to ack message err=%v message=%v",
-					err,
-					m)
+
+			// fail randomly
+			if rand.Intn(4) == 0 {
+				log.Printf("[ERROR] monkeys id=%v", m.ID)
+				continue
 			}
+
+			if err := q.Ack(m); err != nil {
+				log.Printf("[ERROR] ACK fail id=%v : err = %v", m.ID, err)
+				continue
+			}
+
+			log.Printf("[INFO] ACK OK %v", m.ID)
 		}
 	}()
 
