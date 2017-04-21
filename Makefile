@@ -11,12 +11,12 @@ GO_DIST = GOOS=linux GOARCH=amd64 go build
 
 all: clean build
 
-dist:
+dist: test
 	mkdir -p dist
 	$(GO_DIST) -o dist/queue-foo-publish cmd/queue-foo-publish/main.go
 	$(GO_DIST) -o dist/queue-foo-receive cmd/queue-foo-receive/main.go
 
-build:
+build: test
 	mkdir -p build
 	$(GO_BUILD) -o build/queue-foo-publish cmd/queue-foo-publish/main.go
 	$(GO_BUILD) -o build/queue-foo-receive cmd/queue-foo-receive/main.go
@@ -30,7 +30,7 @@ run-receive:
 test:
 	$(GO) test
 
-docker:
+docker: dist
 	docker build -t queue-foo-receive .
 
 docker-run:
