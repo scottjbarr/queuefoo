@@ -12,10 +12,10 @@ import (
 )
 
 func main() {
-	batchCount, err := strconv.ParseInt(os.Getenv("BATCH_COUNT"), 10, 32)
+	batchCount, _ := strconv.ParseInt(os.Getenv("BATCH_COUNT"), 10, 32)
 
-	if err != nil {
-		panic(err)
+	if batchCount == 0 {
+		panic("BATCH_COUNT=i must be set, where i is number of batches")
 	}
 
 	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
@@ -33,7 +33,6 @@ func main() {
 		messages := []queuefoo.Message{}
 
 		for i := 0; i < 10; i++ {
-			//uid := uuid.NewV4().String()
 			id := fmt.Sprintf("%v", j*10+i)
 			m := queuefoo.Message{
 				ID:      id,
